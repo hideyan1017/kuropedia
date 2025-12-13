@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <link rel="icon" href="https://lh6.googleusercontent.com/BE2wasp2QiugvFlJkY-HJvEdT_9kXPw5p3HkIy0ELVf9Q1b21HbLzcA4mQEL8N9vskSuQLhG52QyrQHyP_7n7BWsVTF3KB4uzqimyliV8wUofHPQ5CprLdBSJ1sOoXdjXn51i1jXq_-ucFIi9ZR49KGwgQ=s2048">
+<meta property="og:type" content="article" />
+<meta property="og:title" content="クロペディア" />
+<meta property="og:description" content="黒田の支配下の知らない世界へ" />
+<meta property="og:image" content="https://lh7-rt.googleusercontent.com/slidesz/AGV_vUfehhfBL8YaFtmHEx18HvxrZ3dAlQHzYn-261r7yWABYgxlVThBqk-9X_OAILaC7pD9HdMvuVXLrwJ8UjcMnaoZbxB0PSjTb-2EkcNAPDmiKWgsSaKMC6SJbNk9ED5JEP1_qr0K1WTO320BVyBeYZm-DQfTmJw=nw?key=xpFZJiCkXzS-Q2OP2oX1bg" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クロペディア</title>
+    <style>
+        body {
+            font-family: "Hiragino Sans", "Helvetica Neue", Helvetica, Arial, "Meiryo", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #222;
+            line-height: 1.6;
+        }
+        #header {
+            background-color: #fff;
+            border-bottom: 1px solid #a2a9b1;
+            padding: 8px 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        #logo:hover {
+            text-decoration: underline;
+        }
+        #search-container {
+            display: flex;
+            gap: 5px;
+        }
+        #search-input {
+            padding: 6px 10px;
+            border: 1px solid #a2a9b1;
+            border-radius: 4px;
+            width: 200px;
+            font-size: 1em;
+        }
+        #search-button {
+            padding: 6px 12px;
+            background-color: #3366cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #search-button:hover {
+            background-color: #2850a7;
+        }
+        #container {
+            max-width: 1200px;
+            margin: 15px auto;
+            padding: 0 15px;
+        }
+        #sidebar {
+            display: none;
+        }
+        #content {
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #a2a9b1;
+            border-radius: 2px;
+        }
+        h1, h2, h3 {
+            border-bottom: 1px solid #a2a9b1;
+            padding-bottom: 8px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; }
+        h3 { font-size: 1.5em; }
+
+        details {
+            margin: 15px 0;
+        }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 8px 0;
+            font-weight: bold;
+            border-bottom: 1px solid #a2a9b1;
+        }
+        details > summary::-webkit-details-marker { display: none; }
+        details > div {
+            padding: 5px 0 5px 0;
+        }
+        /* 折りたたみ内のリストを綺麗に整える */
+        details ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        details li {
+            margin-bottom: 8px;
+        }
+
+        /* 検索結果の<li>（前回の綺麗なデザインを維持） */
+        #search-results {
+            display: none;
+        }
+        #search-results h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #a2a9b1;
+            padding-bottom: 8px;
+        }
+        #search-results ul {
+            list-style: none;
+            padding: 0;
+        }
+        #search-results li {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        #search-results li:hover {
+            background-color: #eaecf0;
+            border-color: #c8ccd1;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+        #search-results a {
+            color: #3366cc;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        #search-results a:hover {
+            text-decoration: underline;
+        }
+        #search-results .type-label {
+            display: inline-block;
+            font-size: 0.8em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 12px;
+            vertical-align: middle;
+        }
+        #search-results .type-label.this-page {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        #search-results .type-label.other-article {
+            background-color: #e8f5e8;
+            color: #388e3c;
+        }
+        #no-results {
+            display: none;
+            color: #666;
+            font-style: italic;
+            margin: 30px 0;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            #top-bar { flex-direction: column; align-items: flex-start; }
+            #search-container { width: 100%; }
+            #search-input { width: 100%; }
+            #container { padding: 0 10px; }
+            #search-results li {
+                padding: 12px 14px;
+            }
+            #search-results a {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div id="top-bar">
+            <a href="https://kuropedia.netlify.app/" id="logo">クロペディア</a>
+            <div id="search-container">
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+
+        <div id="content">
+            <div id="article-content">
+<h1 id="中学校">中学校</h1>
+<p><strong>中学校</strong>とは義務教育の後半戦の3年を指すことが多いが、このクロペディアでは、黒田の支配下メンバーが通っていた中学校を指すことが多い。(場合によっては違うことを指す)</p>
+<details><summary>特徴</summary>
+<div>基本的に6時間授業×5の繰り返しであり、部活動に関しては水曜日は朝練と午後練が共に無い(一部の部活はやってる)が、基本的には部活はある。平日に平均的に4回部活があり、土日のどちらかがあるのがセオリー。部活によって異なるが運動部はほんとんだがこのサイクル。これによって水曜日は平日なのにまだ好きだった人も多い。(部活が好きな人は例外である) <p></p>学校生活に関して、約36人クラスで、1クラスに不登校が1人いるか、いないかの学校。良くも悪くも平均的な学校。しかし、他の公立中学校に比べ人数が多く、約300人ぐらい存在し、8クラス存在する。そのせいか、先生が指導を十分に見れないため、個性的な人の指導をすることが困難になっている。この中学校のおかげ(せい)で、人間関係に耐性がついた人も多いはず。<p></p>授業に関してはお世辞にも上手とは言えない先生が多く、少し残念であった。意外にも授業には積極的な生徒が多く、クラスで寝ている生徒は少ない印象。意外にも真面目に授業を聞いている生徒が多い。その為、定期テストでは約300人いるのに、60〜70点ぐらいに収まっている。しかし、何故か定期テストで1桁台をとる謎の人物も現れる。<p></p>施設に関しては、3年生の棟が改装されて若干、他の棟と差別化を図っている。トイレに関しては、流石公立学校といった様子。体育館に関しては、現在冷房がついてるという噂話を聞いたが、自分が通ってるときには冷房は存在しなかった。体育館は広いらしいが、一般的な広さだと思っている。図書室があり意外にも本のジャンルは豊富で、本が無かったら他校から借りることができるシステムが画期的であった。職員室は入ったことがあまり無い為不明。理科室が複数個あり、実験器具には所々格差を感じるものがある。音楽室は何故か2つあり、1つ目の方が歌などを学ぶとき、2つ目が楽器などを学ぶときと、何故か分かれていた。<p></p>給食のシステムが独特であり、A給食とB給食を選ぶことができた。ざっくり違いを言うとA給食はご飯,B給食はパンや麺類といった場合分けができる。他校からすると画期的なシステムであると思う。しかし、美味しそうな方を選ぶのが一般的だが、残すことが許されなかったので(残したら昼休みが始まる直前ぐらいまで残せない？)残さない方を選ぶのが定石であった。人気がなかったメニューにカブのサラダがあるが、不味すぎて、誰も食べていなかったと言われている。また、某クラスではコッペパンにつけるジャムなどを辞書のカバーの中に収納していたらしい。<p></p>制服は意外にも可愛いと定評である。体操着に関しては人によってはパジャマの代わりにしている人も多いぐらい通気性がよく、僕たちの学校の金は服にしか使われてない。<p></p>イベントのスポーツ大会，合唱祭は好みが分かれ、行事がつまらない人にとっては退屈な時間である。その中でも合唱際はコンサートホールを借りてやるのがセオリーだったが、僕たちが通ってたときにはコロナウイルスが流行っていたので普通に体育館でやった。</div>
+</details>
+<details><summary>通ってた生徒(1部)</summary>
+<div><li><a href="https://kuropedia.netlify.app/はちみー">はちみー</a></li> <li><a href="https://kuropedia.netlify.app/神田">神田</a></li> <li><a href="https://kuropedia.netlify.app/とうくん">とうくん</a></li> <li><a href="https://kuropedia.netlify.app/カプリコ">カプリコ</a></li> <li><a href="https://kuropedia.netlify.app/850">850</a></li> <li><a href="https://kuropedia.netlify.app/キョンシ">キョンシ</a></li> <li><a href="https://kuropedia.netlify.app/A">A</a></li> <li><a href="https://kuropedia.netlify.app/りくとのちんぽじ">りくとのちんぽじ</a></li> </div>
+</details>
+<details><summary>先生</summary>
+<div> <li><a href="https://kuropedia.netlify.app/黒田祥一">黒田祥一</a></li> <li><a href="https://kuropedia.netlify.app/佐藤峰人">佐藤峰人</a></li> <li><a href="https://kuropedia.netlify.app/姥山">姥山</a></li> <li><a href="https://kuropedia.netlify.app/は須藤繭">須藤繭</a></li> </div>
+</details>
+
+            </div>
+
+            <div id="search-results">
+                <h2>検索結果</h2>
+                <ul id="results-list"></ul>
+                <p id="no-results">該当する記事や見出しが見つかりませんでした。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // （前回と同じ検索スクリプトをそのまま使用）
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const articleContent = document.getElementById('article-content');
+        const searchResults = document.getElementById('search-results');
+        const resultsList = document.getElementById('results-list');
+        const noResults = document.getElementById('no-results');
+
+        const headings = articleContent.querySelectorAll('h1, h2, h3');
+        headings.forEach((heading, index) => {
+            if (!heading.id) {
+                heading.id = 'heading-' + index;
+            }
+        });
+
+        const sidebarLinks = document.querySelectorAll('#sidebar a');
+
+        function performSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+
+            if (query === '') {
+                articleContent.style.display = 'block';
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            resultsList.innerHTML = '';
+            let found = false;
+
+            headings.forEach(heading => {
+                const text = heading.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    found = true;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#' + heading.id;
+                    a.textContent = heading.textContent;
+                    a.onclick = (e) => {
+                        e.preventDefault();
+                        articleContent.style.display = 'block';
+                        searchResults.style.display = 'none';
+                        searchInput.value = '';
+                        document.getElementById(heading.id).scrollIntoView({ behavior: 'smooth' });
+                    };
+                    li.appendChild(a);
+
+                    const span = document.createElement('span');
+                    span.textContent = 'このページの見出し';
+                    span.className = 'type-label this-page';
+                    li.appendChild(span);
+
+                    resultsList.appendChild(li);
+                }
+            });
+
+            sidebarLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    found = true;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.href;
+                    a.textContent = link.textContent;
+                    li.appendChild(a);
+
+                    const span = document.createElement('span');
+                    span.textContent = '別記事';
+                    span.className = 'type-label other-article';
+                    li.appendChild(span);
+
+                    resultsList.appendChild(li);
+                }
+            });
+
+            articleContent.style.display = 'none';
+            searchResults.style.display = 'block';
+            noResults.style.display = found ? 'none' : 'block';
+        }
+
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        searchResults.style.display = 'none';
+    </script>
+</body>
+</html>
