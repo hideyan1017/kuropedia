@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <link rel="icon" href="https://lh6.googleusercontent.com/BE2wasp2QiugvFlJkY-HJvEdT_9kXPw5p3HkIy0ELVf9Q1b21HbLzcA4mQEL8N9vskSuQLhG52QyrQHyP_7n7BWsVTF3KB4uzqimyliV8wUofHPQ5CprLdBSJ1sOoXdjXn51i1jXq_-ucFIi9ZR49KGwgQ=s2048">
+<meta property="og:type" content="article" />
+<meta property="og:title" content="クロペディア" />
+<meta property="og:description" content="黒田の支配下の知らない世界へ" />
+<meta property="og:image" content="https://lh7-rt.googleusercontent.com/slidesz/AGV_vUfehhfBL8YaFtmHEx18HvxrZ3dAlQHzYn-261r7yWABYgxlVThBqk-9X_OAILaC7pD9HdMvuVXLrwJ8UjcMnaoZbxB0PSjTb-2EkcNAPDmiKWgsSaKMC6SJbNk9ED5JEP1_qr0K1WTO320BVyBeYZm-DQfTmJw=nw?key=xpFZJiCkXzS-Q2OP2oX1bg" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>クロペディア</title>
+    <style>
+        body {
+            font-family: "Hiragino Sans", "Helvetica Neue", Helvetica, Arial, "Meiryo", sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            color: #222;
+            line-height: 1.6;
+        }
+        #header {
+            background-color: #fff;
+            border-bottom: 1px solid #a2a9b1;
+            padding: 8px 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        #logo {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #000;
+            text-decoration: none;
+        }
+        #logo:hover {
+            text-decoration: underline;
+        }
+        #search-container {
+            display: flex;
+            gap: 5px;
+        }
+        #search-input {
+            padding: 6px 10px;
+            border: 1px solid #a2a9b1;
+            border-radius: 4px;
+            width: 200px;
+            font-size: 1em;
+        }
+        #search-button {
+            padding: 6px 12px;
+            background-color: #3366cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #search-button:hover {
+            background-color: #2850a7;
+        }
+        #container {
+            max-width: 1200px;
+            margin: 15px auto;
+            padding: 0 15px;
+        }
+        #sidebar {
+            display: none;
+        }
+        #content {
+            background-color: #fff;
+            padding: 15px;
+            border: 1px solid #a2a9b1;
+            border-radius: 2px;
+        }
+        h1, h2, h3 {
+            border-bottom: 1px solid #a2a9b1;
+            padding-bottom: 8px;
+            margin-top: 24px;
+            margin-bottom: 12px;
+        }
+        h1 { font-size: 2.2em; }
+        h2 { font-size: 1.8em; }
+        h3 { font-size: 1.5em; }
+
+        details {
+            margin: 15px 0;
+        }
+        details > summary {
+            list-style: none;
+            cursor: pointer;
+            padding: 8px 0;
+            font-weight: bold;
+            border-bottom: 1px solid #a2a9b1;
+        }
+        details > summary::-webkit-details-marker { display: none; }
+        details > div {
+            padding: 5px 0 5px 0;
+        }
+        /* 折りたたみ内のリストを綺麗に整える */
+        details ul {
+            margin: 10px 0;
+            padding-left: 20px;
+        }
+        details li {
+            margin-bottom: 8px;
+        }
+
+        /* 検索結果の<li>（前回の綺麗なデザインを維持） */
+        #search-results {
+            display: none;
+        }
+        #search-results h2 {
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #a2a9b1;
+            padding-bottom: 8px;
+        }
+        #search-results ul {
+            list-style: none;
+            padding: 0;
+        }
+        #search-results li {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 8px;
+            padding: 14px 16px;
+            margin-bottom: 12px;
+            transition: all 0.2s ease;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+        #search-results li:hover {
+            background-color: #eaecf0;
+            border-color: #c8ccd1;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            transform: translateY(-1px);
+        }
+        #search-results a {
+            color: #3366cc;
+            text-decoration: none;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        #search-results a:hover {
+            text-decoration: underline;
+        }
+        #search-results .type-label {
+            display: inline-block;
+            font-size: 0.8em;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-left: 12px;
+            vertical-align: middle;
+        }
+        #search-results .type-label.this-page {
+            background-color: #e3f2fd;
+            color: #1976d2;
+        }
+        #search-results .type-label.other-article {
+            background-color: #e8f5e8;
+            color: #388e3c;
+        }
+        #no-results {
+            display: none;
+            color: #666;
+            font-style: italic;
+            margin: 30px 0;
+            font-size: 1.1em;
+        }
+
+        @media (max-width: 768px) {
+            #top-bar { flex-direction: column; align-items: flex-start; }
+            #search-container { width: 100%; }
+            #search-input { width: 100%; }
+            #container { padding: 0 10px; }
+            #search-results li {
+                padding: 12px 14px;
+            }
+            #search-results a {
+                font-size: 1.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="header">
+        <div id="top-bar">
+            <a href="https://kuropedia.netlify.app/" id="logo">クロペディア</a>
+            <div id="search-container">
+            </div>
+        </div>
+    </div>
+
+    <div id="container">
+
+        <div id="content">
+            <div id="article-content">
+<!-- この下に貼り付け︎︎ ︎︎ -->
+<h1 id="黒田ーゲット8735">黒田ーゲット8735</h1>
+<p>『ターゲット1900』の強化版。読み方は「クロターゲット」「クロダーゲット」どちらでも構わない。ここに載ってる単語と意味はセットで覚えろ！</p>
+<details><summary>概要</summary>
+<div><a href="https://kuropedia.netlify.app/カプリコ">カプリコ</a>が『ターゲット1900』の単語は何があるのか、知りたかったのでスプレッドシートにまとめた。これが原因で、『ターゲット1900』に出てくる英単語をランダムに20個出して、英単語の訳(意味)を<a href="https://kuropedia.netlify.app/黒田の支配下">黒田の支配下</a>メンバーが予想してできたものがこの単語帳。<p></p>余談だが、<a href="https://kuropedia.netlify.app/とうくん">とうくん</a>が何故かこの単語帳を用いて『みんなで早押しクイズ』で問題を作成している。<p></p>背景色について<ul><li>白色の場合<br>全く意味が違う。</li>
+<li>黄色の場合<br>本来の意味と一致している。</li><p></p>
+<li>濃い黄色の場合<br>オリジナリティがあって本来の意味と一致している</li></ul>
+</div>
+</details>
+<details><summary>英単語一覧</summary>
+<div>
+<head>
+    <meta charset="UTF-8">
+    <style>
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            margin: 20px 0;
+        }
+
+<pre><code>    table {
+        width: 100%;
+        border-collapse: collapse;
+        white-space: nowrap;
+        font-family: sans-serif;
+        font-size: 14px;
+    }
+
+    th, td {
+        border: 1px solid #ccc;
+        padding: 10px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .col-no {
+        text-align: center;
+        width: 40px;
+    }
+
+    /* 背景色の指定用クラス */
+    .bg-yellow {
+        background-color: #fff9c4; /* 薄い黄色 */
+    }
+
+    .bg-dark-yellow {
+        background-color: #fdd835; /* 濃い黄色 */
+    }
+&lt;/style&gt;
+</code></pre>
+</head>
+<body>
+
+<div class="table-container">
+    <table>
+        <thead>
+            <tr>
+                <th class="col-no">No.</th>
+                <th>英単語</th>
+                <th>黒田訳</th>
+                <th>本来の意味</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="bg-yellow"><td class="col-no">1</td><td>horror</td><td>怖い</td><td>恐怖</td></tr>
+            <tr class=""><td class="col-no">2</td><td>withstand</td><td>そばに立つ</td><td>に耐える</td></tr>
+            <tr><td class="col-no">3</td><td>fluent</td><td>逢いたくて逢いたくて震える</td><td>流ちょうな</td></tr>
+            <tr class="col-no"><td class="col-no">4</td><td>forecast</td><td>焦点当てる</td><td>を予想[予測]する</td></tr>
+            <tr class="bg-yellow"><td class="col-no">5</td><td>differ</td><td>ちょっと違う感じ</td><td>異なる</td></tr>
+            <tr class="bg-yellow"><td class="col-no">6</td><td>explode</td><td>爆発</td><td>爆発する</td></tr>
+            <tr><td class="col-no">7</td><td>quest</td><td>アリス、クエストを受注します</td><td>研究</td></tr>
+            <tr><td class="col-no">8</td><td>illustrate</td><td>病気スタート</td><td>を説明する</td></tr>
+            <tr><td class="col-no">9</td><td>attract</td><td>受け入れる</td><td>を引きつける</td></tr>
+            <tr class="bg-yellow"><td class="col-no">10</td><td>task</td><td>淫夢</td><td>(課せられた)仕事, 作業</td></tr>
+            <tr><td class="col-no">11</td><td>practice</td><td>プラスチック</td><td>実践, 実行</td></tr>
+            <tr class="bg-yellow"><td class="col-no">12</td><td>toxic</td><td>TOEIC(毒)</td><td>有毒な</td></tr>
+            <tr><td class="col-no">13</td><td>hygiene</td><td>ジェンダーレス</td><td>衛生(状態)</td></tr>
+            <tr class="bg-yellow"><td class="col-no">14</td><td>neglect</td><td>殴るぞ</td><td>をおろそかにする, 怠る</td></tr>
+            <tr><td class="col-no">15</td><td>mourn</td><td>好きだな</td><td>(を)悼む</td></tr>
+            <tr><td class="col-no">16</td><td>inspect</td><td>殺すぞ</td><td>を点検する</td></tr>
+            <tr><td class="col-no">17</td><td>susceptible</td><td>成功しちゃったみやう</td><td>(〜の)影響を受けやすい(to)</td></tr>
+            <tr><td class="col-no">18</td><td>commence</td><td>答える</td><td>始まる</td></tr>
+            <tr class="bg-yellow"><td class="col-no">19</td><td>bury</td><td>そうだ！大声出してかき消すなり</td><td>埋める</td></tr>
+            <tr><td class="col-no">20</td><td>whisper</td><td>ウィスパー</td><td>(を)ささやく</td></tr>
+
+<pre><code>        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;21&lt;/td&gt;&lt;td&gt;declare&lt;/td&gt;&lt;td&gt;エクレア&lt;/td&gt;&lt;td&gt;を宣言する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;22&lt;/td&gt;&lt;td&gt;expedition&lt;/td&gt;&lt;td&gt;マイクラ&lt;/td&gt;&lt;td&gt;遠征(隊), 探検(隊)&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;23&lt;/td&gt;&lt;td&gt;fierce&lt;/td&gt;&lt;td&gt;平和になれなかったもの&lt;/td&gt;&lt;td&gt;猛烈な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;24&lt;/td&gt;&lt;td&gt;accomplish&lt;/td&gt;&lt;td&gt;マコモプリン&lt;/td&gt;&lt;td&gt;を成し遂げる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;25&lt;/td&gt;&lt;td&gt;crude&lt;/td&gt;&lt;td&gt;興味ないね(私はLです)&lt;/td&gt;&lt;td&gt;大まかな&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;26&lt;/td&gt;&lt;td&gt;tribe&lt;/td&gt;&lt;td&gt;Toらぶる(乳首)&lt;/td&gt;&lt;td&gt;部族&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;27&lt;/td&gt;&lt;td&gt;combine&lt;/td&gt;&lt;td&gt;バイバイン(累乗)&lt;/td&gt;&lt;td&gt;を(〜と)結びつける(with)&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;28&lt;/td&gt;&lt;td&gt;avoid&lt;/td&gt;&lt;td&gt;避ける&lt;/td&gt;&lt;td&gt;を避ける&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;29&lt;/td&gt;&lt;td&gt;entertain&lt;/td&gt;&lt;td&gt;沸かせる&lt;/td&gt;&lt;td&gt;を楽しませる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;30&lt;/td&gt;&lt;td&gt;trait&lt;/td&gt;&lt;td&gt;ティーダ&lt;/td&gt;&lt;td&gt;特性&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;31&lt;/td&gt;&lt;td&gt;urgent&lt;/td&gt;&lt;td&gt;エージェント&lt;/td&gt;&lt;td&gt;緊急の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;32&lt;/td&gt;&lt;td&gt;enable&lt;/td&gt;&lt;td&gt;翼を授ける&lt;/td&gt;&lt;td&gt;(人)が…できるようにする&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;33&lt;/td&gt;&lt;td&gt;controversy&lt;/td&gt;&lt;td&gt;コントラバス&lt;/td&gt;&lt;td&gt;論争&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;34&lt;/td&gt;&lt;td&gt;marine&lt;/td&gt;&lt;td&gt;喜多川マリン&lt;/td&gt;&lt;td&gt;海の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;35&lt;/td&gt;&lt;td&gt;scheme&lt;/td&gt;&lt;td&gt;シャムでーす&lt;/td&gt;&lt;td&gt;計画&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;36&lt;/td&gt;&lt;td&gt;trap&lt;/td&gt;&lt;td&gt;引っかかりましたねぇ&lt;/td&gt;&lt;td&gt;わな&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;37&lt;/td&gt;&lt;td&gt;realize&lt;/td&gt;&lt;td&gt;驚く&lt;/td&gt;&lt;td&gt;に気づく&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;38&lt;/td&gt;&lt;td&gt;fallacy&lt;/td&gt;&lt;td&gt;男根をしゃぶる行為(淫夢営業)&lt;/td&gt;&lt;td&gt;誤った考え, 誤信&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;39&lt;/td&gt;&lt;td&gt;obsolete&lt;/td&gt;&lt;td&gt;モンストにこんなスキルなかった&lt;/td&gt;&lt;td&gt;廃れた, 使われなくなった&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;40&lt;/td&gt;&lt;td&gt;puzzle&lt;/td&gt;&lt;td&gt;バジル&lt;/td&gt;&lt;td&gt;を当惑させる&lt;/td&gt;&lt;/tr&gt;
+    &lt;/tbody&gt;
+              &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;41&lt;/td&gt;&lt;td&gt;crisis&lt;/td&gt;&lt;td&gt;クリトリス&lt;/td&gt;&lt;td&gt;危機&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;42&lt;/td&gt;&lt;td&gt;literacy&lt;/td&gt;&lt;td&gt;倫理観(多分)&lt;/td&gt;&lt;td&gt;読み書きの能力&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;43&lt;/td&gt;&lt;td&gt;portion&lt;/td&gt;&lt;td&gt;麻薬、クソ&lt;/td&gt;&lt;td&gt;部分&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;44&lt;/td&gt;&lt;td&gt;hesitate&lt;/td&gt;&lt;td&gt;見下す&lt;/td&gt;&lt;td&gt;躊躇する、ためらう&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;45&lt;/td&gt;&lt;td&gt;compensate&lt;/td&gt;&lt;td&gt;コンプレックス&lt;/td&gt;&lt;td&gt;補償する&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;46&lt;/td&gt;&lt;td&gt;weird&lt;/td&gt;&lt;td&gt;迫真の、迫真な&lt;/td&gt;&lt;td&gt;異様な、奇妙な&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;47&lt;/td&gt;&lt;td&gt;alien&lt;/td&gt;&lt;td&gt;エイリアン←あり得ん&lt;/td&gt;&lt;td&gt;(～にとって)異質の(to)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;48&lt;/td&gt;&lt;td&gt;mechanical&lt;/td&gt;&lt;td&gt;めっちゃニガー&lt;/td&gt;&lt;td&gt;機械の&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;49&lt;/td&gt;&lt;td&gt;ally&lt;/td&gt;&lt;td&gt;ブチャラティ&lt;/td&gt;&lt;td&gt;同盟国&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;50&lt;/td&gt;&lt;td&gt;assemble&lt;/td&gt;&lt;td&gt;ケツの穴が無い&lt;/td&gt;&lt;td&gt;を集める&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;51&lt;/td&gt;&lt;td&gt;endanger&lt;/td&gt;&lt;td&gt;危ないくない&lt;/td&gt;&lt;td&gt;を危険にさらす&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;52&lt;/td&gt;&lt;td&gt;numb&lt;/td&gt;&lt;td&gt;南部鉄器&lt;/td&gt;&lt;td&gt;麻痺した、無感覚な&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;53&lt;/td&gt;&lt;td&gt;vanish&lt;/td&gt;&lt;td&gt;バニーボーイッシュ&lt;/td&gt;&lt;td&gt;消える&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;54&lt;/td&gt;&lt;td&gt;conflict&lt;/td&gt;&lt;td&gt;コンフレーク(フリスク版)&lt;/td&gt;&lt;td&gt;争い&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;55&lt;/td&gt;&lt;td&gt;demographic&lt;/td&gt;&lt;td&gt;ガビガビな&lt;/td&gt;&lt;td&gt;人工統計学の&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;56&lt;/td&gt;&lt;td&gt;public&lt;/td&gt;&lt;td&gt;公の&lt;/td&gt;&lt;td&gt;公の&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;57&lt;/td&gt;&lt;td&gt;submit&lt;/td&gt;&lt;td&gt;サブウェイの真ん中&lt;/td&gt;&lt;td&gt;を提出する&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;58&lt;/td&gt;&lt;td&gt;migrate&lt;/td&gt;&lt;td&gt;右手に蜂がきた上田&lt;/td&gt;&lt;td&gt;移住する&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;59&lt;/td&gt;&lt;td&gt;virtual&lt;/td&gt;&lt;td&gt;仮想空間(淫夢)&lt;/td&gt;&lt;td&gt;仮想の&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;60&lt;/td&gt;&lt;td&gt;compound&lt;/td&gt;&lt;td&gt;梱包する&lt;/td&gt;&lt;td&gt;を悪化させる&lt;/td&gt;&lt;/tr&gt;
+  
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;61&lt;/td&gt;&lt;td&gt;spatial&lt;/td&gt;&lt;td&gt;喫煙&lt;/td&gt;&lt;td&gt;空間の&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;62&lt;/td&gt;&lt;td&gt;severe&lt;/td&gt;&lt;td&gt;鯖&lt;/td&gt;&lt;td&gt;(人・規律・事態・天気などが)厳しい&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;63&lt;/td&gt;&lt;td&gt;potential&lt;/td&gt;&lt;td&gt;今の最高到達点&lt;/td&gt;&lt;td&gt;潜在的な&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;64&lt;/td&gt;&lt;td&gt;bend&lt;/td&gt;&lt;td&gt;ベッドでちんこ勃つ&lt;/td&gt;&lt;td&gt;を曲げる&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;65&lt;/td&gt;&lt;td&gt;bury&lt;/td&gt;&lt;td&gt;バリヤード&lt;/td&gt;&lt;td&gt;埋める&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;66&lt;/td&gt;&lt;td&gt;technique&lt;/td&gt;&lt;td&gt;手マンする能力&lt;/td&gt;&lt;td&gt;技術&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;67&lt;/td&gt;&lt;td&gt;forbid&lt;/td&gt;&lt;td&gt;ビビット集合&lt;/td&gt;&lt;td&gt;を禁じる&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;68&lt;/td&gt;&lt;td&gt;margin&lt;/td&gt;&lt;td&gt;魔人切り&lt;/td&gt;&lt;td&gt;余白&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;69&lt;/td&gt;&lt;td&gt;neighborhood&lt;/td&gt;&lt;td&gt;隣人関係&lt;/td&gt;&lt;td&gt;地域&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;70&lt;/td&gt;&lt;td&gt;appeal&lt;/td&gt;&lt;td&gt;煽り行為&lt;/td&gt;&lt;td&gt;訴える&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;71&lt;/td&gt;&lt;td&gt;worship&lt;/td&gt;&lt;td&gt;もうお前船降りろ&lt;/td&gt;&lt;td&gt;崇拝，礼拝(式)&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;72&lt;/td&gt;&lt;td&gt;grid&lt;/td&gt;&lt;td&gt;公式容認バグ&lt;/td&gt;&lt;td&gt;(電気などの)供給網&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;73&lt;/td&gt;&lt;td&gt;ancestor&lt;/td&gt;&lt;td&gt;アンサンブルスターズ！&lt;/td&gt;&lt;td&gt;祖先&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;74&lt;/td&gt;&lt;td&gt;likewise&lt;/td&gt;&lt;td&gt;～のように,Wiiが好き&lt;/td&gt;&lt;td&gt;同様に&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;75&lt;/td&gt;&lt;td&gt;district&lt;/td&gt;&lt;td&gt;種も仕掛けもナイ&lt;/td&gt;&lt;td&gt;地区&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;76&lt;/td&gt;&lt;td&gt;endure&lt;/td&gt;&lt;td&gt;エンダーいやーーーーー&lt;/td&gt;&lt;td&gt;に耐える&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;77&lt;/td&gt;&lt;td&gt;meaningful&lt;/td&gt;&lt;td&gt;めっちゃ意味する&lt;/td&gt;&lt;td&gt;意味のある&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;78&lt;/td&gt;&lt;td&gt;outlook&lt;/td&gt;&lt;td&gt;Gメールの強化版&lt;/td&gt;&lt;td&gt;見解&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;79&lt;/td&gt;&lt;td&gt;quality&lt;/td&gt;&lt;td&gt;シコリテリ&lt;/td&gt;&lt;td&gt;質&lt;/td&gt;&lt;/tr&gt;
+    &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;80&lt;/td&gt;&lt;td&gt;tweet&lt;/td&gt;&lt;td&gt;蒼甫クソツイートやめろ&lt;/td&gt;&lt;td&gt;(を)ツイートする，つぶやく&lt;/td&gt;&lt;/tr&gt;
+  
+              &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;81&lt;/td&gt;&lt;td&gt;nutrition&lt;/td&gt;&lt;td&gt;何を四天王&lt;/td&gt;&lt;td&gt;栄養(の摂取)&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;82&lt;/td&gt;&lt;td&gt;admire&lt;/td&gt;&lt;td&gt;得してるパンチラ&lt;/td&gt;&lt;td&gt;に敬服[関心]する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;83&lt;/td&gt;&lt;td&gt;intact&lt;/td&gt;&lt;td&gt;チンコ入ってる卓也&lt;/td&gt;&lt;td&gt;損なわれていない&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;84&lt;/td&gt;&lt;td&gt;dairy&lt;/td&gt;&lt;td&gt;デイリーミッション(やらない)&lt;/td&gt;&lt;td&gt;乳製品&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;85&lt;/td&gt;&lt;td&gt;welfare&lt;/td&gt;&lt;td&gt;ふぁっ！？&lt;/td&gt;&lt;td&gt;福祉, 幸福&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;86&lt;/td&gt;&lt;td&gt;pledge&lt;/td&gt;&lt;td&gt;バンジーガム&lt;/td&gt;&lt;td&gt;を誓う, 約束する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;87&lt;/td&gt;&lt;td&gt;habitat&lt;/td&gt;&lt;td&gt;ビビット解散&lt;/td&gt;&lt;td&gt;生息地&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;88&lt;/td&gt;&lt;td&gt;worthwhile&lt;/td&gt;&lt;td&gt;上田の中間&lt;/td&gt;&lt;td&gt;価値がある&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;89&lt;/td&gt;&lt;td&gt;bloom&lt;/td&gt;&lt;td&gt;メダリストピクミン&lt;/td&gt;&lt;td&gt;花が咲く&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;90&lt;/td&gt;&lt;td&gt;embed&lt;/td&gt;&lt;td&gt;エンドラベッド討伐&lt;/td&gt;&lt;td&gt;埋め込まれる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;91&lt;/td&gt;&lt;td&gt;potential&lt;/td&gt;&lt;td&gt;今の最高到達点，SEKAOWA&lt;/td&gt;&lt;td&gt;潜在的な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;92&lt;/td&gt;&lt;td&gt;trail&lt;/td&gt;&lt;td&gt;トライアル(安い)&lt;/td&gt;&lt;td&gt;(野山などの)小道&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;93&lt;/td&gt;&lt;td&gt;collaborate&lt;/td&gt;&lt;td&gt;モンスト×上田のガチャ配信&lt;/td&gt;&lt;td&gt;共同して働く&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;94&lt;/td&gt;&lt;td&gt;aspect&lt;/td&gt;&lt;td&gt;ケツの穴がちょっと違う感じ&lt;/td&gt;&lt;td&gt;(物事の)側面&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;95&lt;/td&gt;&lt;td&gt;compulsory&lt;/td&gt;&lt;td&gt;全達成できなくてごめん&lt;/td&gt;&lt;td&gt;義務的な, 強制的な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;96&lt;/td&gt;&lt;td&gt;roar&lt;/td&gt;&lt;td&gt;ロードローラー&lt;/td&gt;&lt;td&gt;うなる, ほえる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;97&lt;/td&gt;&lt;td&gt;oral&lt;/td&gt;&lt;td&gt;おなる&lt;/td&gt;&lt;td&gt;口頭の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;98&lt;/td&gt;&lt;td&gt;slavery&lt;/td&gt;&lt;td&gt;とてもサラブレット&lt;/td&gt;&lt;td&gt;奴隷制度&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;99&lt;/td&gt;&lt;td&gt;bargain&lt;/td&gt;&lt;td&gt;スーパーサイヤ人(バーの姿)&lt;/td&gt;&lt;td&gt;買い得品&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;100&lt;/td&gt;&lt;td&gt;compatible&lt;/td&gt;&lt;td&gt;コンパチ&lt;/td&gt;&lt;td&gt;矛盾しない&lt;/td&gt;&lt;/tr&gt;
+  
+  &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;101&lt;/td&gt;&lt;td&gt;hive&lt;/td&gt;&lt;td&gt;マイクラのサーバー&lt;/td&gt;&lt;td&gt;ミツバチの巣(箱)&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;102&lt;/td&gt;&lt;td&gt;deduce&lt;/td&gt;&lt;td&gt;デデデ大王(環境破壊)&lt;/td&gt;&lt;td&gt;を推測する, 演繹する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;103&lt;/td&gt;&lt;td&gt;tissue&lt;/td&gt;&lt;td&gt;ティッシュ(しこった後)&lt;/td&gt;&lt;td&gt;(生物の)組織&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;104&lt;/td&gt;&lt;td&gt;premium&lt;/td&gt;&lt;td&gt;YouTube&lt;/td&gt;&lt;td&gt;保険料&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;105&lt;/td&gt;&lt;td&gt;grateful&lt;/td&gt;&lt;td&gt;めっちゃすごい&lt;/td&gt;&lt;td&gt;感謝している&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;106&lt;/td&gt;&lt;td&gt;extend&lt;/td&gt;&lt;td&gt;政治左より&lt;/td&gt;&lt;td&gt;を伸[延]ばす&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;107&lt;/td&gt;&lt;td&gt;disorder&lt;/td&gt;&lt;td&gt;上田蒼甫と行くサイゼリヤ&lt;/td&gt;&lt;td&gt;障害, (心身の)不調&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;108&lt;/td&gt;&lt;td&gt;conscience&lt;/td&gt;&lt;td&gt;科学と人間生活&lt;/td&gt;&lt;td&gt;良心&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;109&lt;/td&gt;&lt;td&gt;bow&lt;/td&gt;&lt;td&gt;胞子&lt;/td&gt;&lt;td&gt;おじぎする&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;110&lt;/td&gt;&lt;td&gt;eligible&lt;/td&gt;&lt;td&gt;エレキブル&lt;/td&gt;&lt;td&gt;適格の, 資格のある&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;111&lt;/td&gt;&lt;td&gt;subsequent&lt;/td&gt;&lt;td&gt;サブスクライブ&lt;/td&gt;&lt;td&gt;その後の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;112&lt;/td&gt;&lt;td&gt;resort&lt;/td&gt;&lt;td&gt;死に戻り&lt;/td&gt;&lt;td&gt;(好ましくない手段に)訴える, 頼る&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;113&lt;/td&gt;&lt;td&gt;breed&lt;/td&gt;&lt;td&gt;ブリーチ作者&lt;/td&gt;&lt;td&gt;を繁殖させる, 付てる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;114&lt;/td&gt;&lt;td&gt;swallow&lt;/td&gt;&lt;td&gt;うちで踊ろう(自粛期間)&lt;/td&gt;&lt;td&gt;(を)飲み込む&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;115&lt;/td&gt;&lt;td&gt;prairie&lt;/td&gt;&lt;td&gt;パイレーツ&lt;/td&gt;&lt;td&gt;大草原&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;116&lt;/td&gt;&lt;td&gt;circumstance&lt;/td&gt;&lt;td&gt;Gスポ&lt;/td&gt;&lt;td&gt;状況, 事情&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;117&lt;/td&gt;&lt;td&gt;abandon&lt;/td&gt;&lt;td&gt;あなたと一緒にアルマゲドン&lt;/td&gt;&lt;td&gt;を捨てる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;118&lt;/td&gt;&lt;td&gt;scope&lt;/td&gt;&lt;td&gt;Spoonで仲良くしてくれた人構文&lt;/td&gt;&lt;td&gt;(活動・能力などの)範囲&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;119&lt;/td&gt;&lt;td&gt;acquire&lt;/td&gt;&lt;td&gt;亜空切断&lt;/td&gt;&lt;td&gt;を得る&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;120&lt;/td&gt;&lt;td&gt;sue&lt;/td&gt;&lt;td&gt;蘇芳&lt;/td&gt;&lt;td&gt;を告訴する&lt;/td&gt;&lt;/tr&gt;
+
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;121&lt;/td&gt;&lt;td&gt;virtual&lt;/td&gt;&lt;td&gt;仮想空間(淫夢)&lt;/td&gt;&lt;td&gt;仮想の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;122&lt;/td&gt;&lt;td&gt;stall&lt;/td&gt;&lt;td&gt;抜く&lt;/td&gt;&lt;td&gt;露店&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;123&lt;/td&gt;&lt;td&gt;vendor&lt;/td&gt;&lt;td&gt;バウンディ劣化版&lt;/td&gt;&lt;td&gt;物売り, 行商人&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;124&lt;/td&gt;&lt;td&gt;recall&lt;/td&gt;&lt;td&gt;呼びなおす，賭けなおす&lt;/td&gt;&lt;td&gt;を思い出す&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;125&lt;/td&gt;&lt;td&gt;tense&lt;/td&gt;&lt;td&gt;センス無い&lt;/td&gt;&lt;td&gt;張り詰めた, 緊張した&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;126&lt;/td&gt;&lt;td&gt;file&lt;/td&gt;&lt;td&gt;ギガファイル便&lt;/td&gt;&lt;td&gt;ファイル&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;127&lt;/td&gt;&lt;td&gt;potential&lt;/td&gt;&lt;td&gt;最高到達点 SEGAのテトリス&lt;/td&gt;&lt;td&gt;潜在的な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;128&lt;/td&gt;&lt;td&gt;notorious&lt;/td&gt;&lt;td&gt;反逆する&lt;/td&gt;&lt;td&gt;悪名高い&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;129&lt;/td&gt;&lt;td&gt;offspring&lt;/td&gt;&lt;td&gt;部活オフの幼少期の蒼甫&lt;/td&gt;&lt;td&gt;子孫, 子&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;130&lt;/td&gt;&lt;td&gt;derive&lt;/td&gt;&lt;td&gt;デリヘル&lt;/td&gt;&lt;td&gt;由来する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;131&lt;/td&gt;&lt;td&gt;fossil&lt;/td&gt;&lt;td&gt;琥珀&lt;/td&gt;&lt;td&gt;化石&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;132&lt;/td&gt;&lt;td&gt;strike&lt;/td&gt;&lt;td&gt;やったー！&lt;/td&gt;&lt;td&gt;の心を打つ&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;133&lt;/td&gt;&lt;td&gt;mental&lt;/td&gt;&lt;td&gt;ホントにお願い！&lt;/td&gt;&lt;td&gt;精神の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;134&lt;/td&gt;&lt;td&gt;dread&lt;/td&gt;&lt;td&gt;読めない&lt;/td&gt;&lt;td&gt;をひどく恐れる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;135&lt;/td&gt;&lt;td&gt;sort&lt;/td&gt;&lt;td&gt;首里城(燃える)&lt;/td&gt;&lt;td&gt;を(〜に)分類する(into)&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;136&lt;/td&gt;&lt;td&gt;hybrid&lt;/td&gt;&lt;td&gt;燃料がサラブレッド&lt;/td&gt;&lt;td&gt;ハイブリッドの&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;137&lt;/td&gt;&lt;td&gt;decorate&lt;/td&gt;&lt;td&gt;Deco27(27人いる，うるせぇよ)&lt;/td&gt;&lt;td&gt;を装飾する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;138&lt;/td&gt;&lt;td&gt;defeat&lt;/td&gt;&lt;td&gt;負け負け&lt;/td&gt;&lt;td&gt;を負かす&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;139&lt;/td&gt;&lt;td&gt;implement&lt;/td&gt;&lt;td&gt;淫夢プレゼント&lt;/td&gt;&lt;td&gt;を実行[実施]する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;140&lt;/td&gt;&lt;td&gt;bankrupt&lt;/td&gt;&lt;td&gt;桃鉄のときの上田&lt;/td&gt;&lt;td&gt;破産者を受けた&lt;/td&gt;&lt;/tr&gt;
+  
+              &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;141&lt;/td&gt;&lt;td&gt;retire&lt;/td&gt;&lt;td&gt;諦めないことが大切なんです&lt;/td&gt;&lt;td&gt;引退する, 退職する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;142&lt;/td&gt;&lt;td&gt;disregard&lt;/td&gt;&lt;td&gt;ターゲットの雑魚&lt;/td&gt;&lt;td&gt;を無視する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;143&lt;/td&gt;&lt;td&gt;sacred&lt;/td&gt;&lt;td&gt;ザクレイのピッド&lt;/td&gt;&lt;td&gt;神聖な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;144&lt;/td&gt;&lt;td&gt;sanitation&lt;/td&gt;&lt;td&gt;熱い駅&lt;/td&gt;&lt;td&gt;公衆衛生&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;145&lt;/td&gt;&lt;td&gt;obsession&lt;/td&gt;&lt;td&gt;感知するよん&lt;/td&gt;&lt;td&gt;取りつかれること&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;146&lt;/td&gt;&lt;td&gt;galaxy&lt;/td&gt;&lt;td&gt;フワちゃん&lt;/td&gt;&lt;td&gt;星雲, 銀河&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;147&lt;/td&gt;&lt;td&gt;achieve&lt;/td&gt;&lt;td&gt;青封筒&lt;/td&gt;&lt;td&gt;を達成する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;148&lt;/td&gt;&lt;td&gt;intrinsic&lt;/td&gt;&lt;td&gt;上田蒼甫の反逆&lt;/td&gt;&lt;td&gt;固有の本質的な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;149&lt;/td&gt;&lt;td&gt;ambiguous&lt;/td&gt;&lt;td&gt;枕がでかすぎる&lt;/td&gt;&lt;td&gt;あいまいな&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;150&lt;/td&gt;&lt;td&gt;eloquent&lt;/td&gt;&lt;td&gt;エロクエスト&lt;/td&gt;&lt;td&gt;雄弁な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;151&lt;/td&gt;&lt;td&gt;chemical&lt;/td&gt;&lt;td&gt;科学と人間生活&lt;/td&gt;&lt;td&gt;化学の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;152&lt;/td&gt;&lt;td&gt;scratch&lt;/td&gt;&lt;td&gt;黒歴史製造機&lt;/td&gt;&lt;td&gt;を引っかく&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;153&lt;/td&gt;&lt;td&gt;deceive&lt;/td&gt;&lt;td&gt;サーブは8秒ルール&lt;/td&gt;&lt;td&gt;をだます&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;154&lt;/td&gt;&lt;td&gt;poll&lt;/td&gt;&lt;td&gt;バレーの両端のアレ&lt;/td&gt;&lt;td&gt;世論調査&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;155&lt;/td&gt;&lt;td&gt;adolescent&lt;/td&gt;&lt;td&gt;代行のときに必要なやつ(メアド)&lt;/td&gt;&lt;td&gt;青年&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;156&lt;/td&gt;&lt;td&gt;entrepreneur&lt;/td&gt;&lt;td&gt;安安(まずい)&lt;/td&gt;&lt;td&gt;起業家, 事業家&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;157&lt;/td&gt;&lt;td&gt;reassure&lt;/td&gt;&lt;td&gt;たしかな理由&lt;/td&gt;&lt;td&gt;を安心させる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;158&lt;/td&gt;&lt;td&gt;inspire&lt;/td&gt;&lt;td&gt;パクり&lt;/td&gt;&lt;td&gt;(人)を奮起させる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;159&lt;/td&gt;&lt;td&gt;wealth&lt;/td&gt;&lt;td&gt;ウエーリン&lt;/td&gt;&lt;td&gt;富&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;160&lt;/td&gt;&lt;td&gt;virus&lt;/td&gt;&lt;td&gt;今の上田蒼甫&lt;/td&gt;&lt;td&gt;ウイルス&lt;/td&gt;&lt;/tr&gt;
+  
+              &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;161&lt;/td&gt;&lt;td&gt;arise&lt;/td&gt;&lt;td&gt;アリス知ってます&lt;/td&gt;&lt;td&gt;生じる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;162&lt;/td&gt;&lt;td&gt;textile&lt;/td&gt;&lt;td&gt;文字文字&lt;/td&gt;&lt;td&gt;織物&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;163&lt;/td&gt;&lt;td&gt;exploit&lt;/td&gt;&lt;td&gt;妙な&lt;/td&gt;&lt;td&gt;を活用する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;164&lt;/td&gt;&lt;td&gt;argue&lt;/td&gt;&lt;td&gt;出張&lt;/td&gt;&lt;td&gt;と主張する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;165&lt;/td&gt;&lt;td&gt;resume&lt;/td&gt;&lt;td&gt;出さない&lt;/td&gt;&lt;td&gt;(を)再開する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;166&lt;/td&gt;&lt;td&gt;profit&lt;/td&gt;&lt;td&gt;リングフィット&lt;/td&gt;&lt;td&gt;利益&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;167&lt;/td&gt;&lt;td&gt;complicate&lt;/td&gt;&lt;td&gt;ログインボーナスやりますねぇ&lt;/td&gt;&lt;td&gt;を複雑にする&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;168&lt;/td&gt;&lt;td&gt;descend&lt;/td&gt;&lt;td&gt;おちたな&lt;/td&gt;&lt;td&gt;(を)降りる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;169&lt;/td&gt;&lt;td&gt;coordinate&lt;/td&gt;&lt;td&gt;コーデある&lt;/td&gt;&lt;td&gt;を調整する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;170&lt;/td&gt;&lt;td&gt;vary&lt;/td&gt;&lt;td&gt;青鬼&lt;/td&gt;&lt;td&gt;さまざまである&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;171&lt;/td&gt;&lt;td&gt;landmine&lt;/td&gt;&lt;td&gt;地雷系蒼甫&lt;/td&gt;&lt;td&gt;地雷&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;172&lt;/td&gt;&lt;td&gt;sustain&lt;/td&gt;&lt;td&gt;伊藤誠最終回&lt;/td&gt;&lt;td&gt;を持続させる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;173&lt;/td&gt;&lt;td&gt;shade&lt;/td&gt;&lt;td&gt;シャドーカゲノ&lt;/td&gt;&lt;td&gt;(日)影&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;174&lt;/td&gt;&lt;td&gt;trait&lt;/td&gt;&lt;td&gt;特性だってよ&lt;/td&gt;&lt;td&gt;特性&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;175&lt;/td&gt;&lt;td&gt;situation&lt;/td&gt;&lt;td&gt;上田の振られた状態&lt;/td&gt;&lt;td&gt;状況&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;176&lt;/td&gt;&lt;td&gt;proverb&lt;/td&gt;&lt;td&gt;プロ動詞&lt;/td&gt;&lt;td&gt;ことわざ&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;177&lt;/td&gt;&lt;td&gt;ridiculous&lt;/td&gt;&lt;td&gt;リリが交差する&lt;/td&gt;&lt;td&gt;ばかげた&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;178&lt;/td&gt;&lt;td&gt;inflation&lt;/td&gt;&lt;td&gt;パズドラ&lt;/td&gt;&lt;td&gt;インフレ&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;179&lt;/td&gt;&lt;td&gt;balance&lt;/td&gt;&lt;td&gt;バカなのか&lt;/td&gt;&lt;td&gt;均衡, バランス&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;180&lt;/td&gt;&lt;td&gt;create&lt;/td&gt;&lt;td&gt;八百万 百&lt;/td&gt;&lt;td&gt;を創り出す&lt;/td&gt;&lt;/tr&gt;
+
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;181&lt;/td&gt;&lt;td&gt;store&lt;/td&gt;&lt;td&gt;精子冷凍保存&lt;/td&gt;&lt;td&gt;を保存する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;182&lt;/td&gt;&lt;td&gt;absolute&lt;/td&gt;&lt;td&gt;モンストに絶対あった&lt;/td&gt;&lt;td&gt;絶対的な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;183&lt;/td&gt;&lt;td&gt;evaluate&lt;/td&gt;&lt;td&gt;エヴァンゲリオン&lt;/td&gt;&lt;td&gt;を評価する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;184&lt;/td&gt;&lt;td&gt;superficial&lt;/td&gt;&lt;td&gt;伏黒甚爾&lt;/td&gt;&lt;td&gt;表面的な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;185&lt;/td&gt;&lt;td&gt;parallel&lt;/td&gt;&lt;td&gt;これドラえもんだろ&lt;/td&gt;&lt;td&gt;平行の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;186&lt;/td&gt;&lt;td&gt;gear&lt;/td&gt;&lt;td&gt;じゃあ、&lt;/td&gt;&lt;td&gt;用具, 器具&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;187&lt;/td&gt;&lt;td&gt;virus&lt;/td&gt;&lt;td&gt;今の上田蒼甫のちんちんこんな感じ&lt;/td&gt;&lt;td&gt;ウイルス&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;188&lt;/td&gt;&lt;td&gt;contest&lt;/td&gt;&lt;td&gt;コンドームテスト&lt;/td&gt;&lt;td&gt;コンテスト, 競技会&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;189&lt;/td&gt;&lt;td&gt;perceive&lt;/td&gt;&lt;td&gt;ここらへん&lt;/td&gt;&lt;td&gt;に気づく&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;190&lt;/td&gt;&lt;td&gt;arrange&lt;/td&gt;&lt;td&gt;オレンジレンジ&lt;/td&gt;&lt;td&gt;の段取りをつける&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;191&lt;/td&gt;&lt;td&gt;fancy&lt;/td&gt;&lt;td&gt;ファンキーコング&lt;/td&gt;&lt;td&gt;(気まぐれ)好み&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;192&lt;/td&gt;&lt;td&gt;correct&lt;/td&gt;&lt;td&gt;気持ち良すぎだろ&lt;/td&gt;&lt;td&gt;正しい&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;193&lt;/td&gt;&lt;td&gt;admit&lt;/td&gt;&lt;td&gt;アモングアス&lt;/td&gt;&lt;td&gt;(を)認める&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;194&lt;/td&gt;&lt;td&gt;analogy&lt;/td&gt;&lt;td&gt;アナルほじって&lt;/td&gt;&lt;td&gt;類推&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;195&lt;/td&gt;&lt;td&gt;destroy&lt;/td&gt;&lt;td&gt;革命家&lt;/td&gt;&lt;td&gt;を破損する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;196&lt;/td&gt;&lt;td&gt;nutrition&lt;/td&gt;&lt;td&gt;ミックス納豆&lt;/td&gt;&lt;td&gt;栄養(の摂取)&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;197&lt;/td&gt;&lt;td&gt;tissue&lt;/td&gt;&lt;td&gt;しこった組織&lt;/td&gt;&lt;td&gt;(生物の)組織&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;198&lt;/td&gt;&lt;td&gt;host&lt;/td&gt;&lt;td&gt;チェンソーさん&lt;/td&gt;&lt;td&gt;を主催する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;199&lt;/td&gt;&lt;td&gt;fragment&lt;/td&gt;&lt;td&gt;立ちました&lt;/td&gt;&lt;td&gt;断片&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;200&lt;/td&gt;&lt;td&gt;soak&lt;/td&gt;&lt;td&gt;えっっ&lt;/td&gt;&lt;td&gt;を浸す&lt;/td&gt;&lt;/tr&gt;
+  
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;201&lt;/td&gt;&lt;td&gt;decay&lt;/td&gt;&lt;td&gt;でかすぎんだろ&lt;/td&gt;&lt;td&gt;腐敗する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;212&lt;/td&gt;&lt;td&gt;interest&lt;/td&gt;&lt;td&gt;アナルスト&lt;/td&gt;&lt;td&gt;興味&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;203&lt;/td&gt;&lt;td&gt;cabinet&lt;/td&gt;&lt;td&gt;タッセル&lt;/td&gt;&lt;td&gt;内閣&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;214&lt;/td&gt;&lt;td&gt;sensory&lt;/td&gt;&lt;td&gt;センスない&lt;/td&gt;&lt;td&gt;感覚の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;205&lt;/td&gt;&lt;td&gt;estate&lt;/td&gt;&lt;td&gt;消臭力&lt;/td&gt;&lt;td&gt;(動産・不動産などの)財産&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;216&lt;/td&gt;&lt;td&gt;emit&lt;/td&gt;&lt;td&gt;二段階認証エモート&lt;/td&gt;&lt;td&gt;(光・熱などを)出す&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;207&lt;/td&gt;&lt;td&gt;deliver&lt;/td&gt;&lt;td&gt;デリヘル呼んだらななもりきた&lt;/td&gt;&lt;td&gt;を配達する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;218&lt;/td&gt;&lt;td&gt;authority&lt;/td&gt;&lt;td&gt;フォートナイト街&lt;/td&gt;&lt;td&gt;(関係)当局&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;219&lt;/td&gt;&lt;td&gt;dementia&lt;/td&gt;&lt;td&gt;デーモン将軍&lt;/td&gt;&lt;td&gt;認知症&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;220&lt;/td&gt;&lt;td&gt;structure&lt;/td&gt;&lt;td&gt;上下関係&lt;/td&gt;&lt;td&gt;構造&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;211&lt;/td&gt;&lt;td&gt;launch&lt;/td&gt;&lt;td&gt;ら・うんち&lt;/td&gt;&lt;td&gt;を開始する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;222&lt;/td&gt;&lt;td&gt;uncover&lt;/td&gt;&lt;td&gt;うんこバー&lt;/td&gt;&lt;td&gt;を暴く&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;213&lt;/td&gt;&lt;td&gt;frequent&lt;/td&gt;&lt;td&gt;フェラクエスト&lt;/td&gt;&lt;td&gt;頻繁な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;224&lt;/td&gt;&lt;td&gt;Arctic&lt;/td&gt;&lt;td&gt;上田星(ｳｴﾀﾞｾｲ)&lt;/td&gt;&lt;td&gt;北極の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;215&lt;/td&gt;&lt;td&gt;phase&lt;/td&gt;&lt;td&gt;シコ素材を探す上田&lt;/td&gt;&lt;td&gt;段階, 局面&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;226&lt;/td&gt;&lt;td&gt;stake&lt;/td&gt;&lt;td&gt;賭け賭け&lt;/td&gt;&lt;td&gt;利害関係&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;217&lt;/td&gt;&lt;td&gt;designate&lt;/td&gt;&lt;td&gt;デザインする人&lt;/td&gt;&lt;td&gt;を指定する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;228&lt;/td&gt;&lt;td&gt;sphere&lt;/td&gt;&lt;td&gt;まるまるモリモリ&lt;/td&gt;&lt;td&gt;領域&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;219&lt;/td&gt;&lt;td&gt;destiny&lt;/td&gt;&lt;td&gt;運命を救え&lt;/td&gt;&lt;td&gt;運命&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;220&lt;/td&gt;&lt;td&gt;vanish&lt;/td&gt;&lt;td&gt;バニーガーデン(サ終)&lt;/td&gt;&lt;td&gt;消える&lt;/td&gt;&lt;/tr&gt;
+  
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;221&lt;/td&gt;&lt;td&gt;task&lt;/td&gt;&lt;td&gt;やらない&lt;/td&gt;&lt;td&gt;(課せられた)仕事, 作業&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;222&lt;/td&gt;&lt;td&gt;tablet&lt;/td&gt;&lt;td&gt;ヒカキンの娘愛用&lt;/td&gt;&lt;td&gt;タブレット&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;223&lt;/td&gt;&lt;td&gt;pause&lt;/td&gt;&lt;td&gt;時間停止AV(アニマルビデオ)&lt;/td&gt;&lt;td&gt;(一時的に)中止する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;224&lt;/td&gt;&lt;td&gt;pitch&lt;/td&gt;&lt;td&gt;ヌける&lt;/td&gt;&lt;td&gt;を投げる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;225&lt;/td&gt;&lt;td&gt;slight&lt;/td&gt;&lt;td&gt;消して～&lt;/td&gt;&lt;td&gt;わずかな&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;226&lt;/td&gt;&lt;td&gt;grid&lt;/td&gt;&lt;td&gt;グライガー&lt;/td&gt;&lt;td&gt;(電気などの)供給網&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;227&lt;/td&gt;&lt;td&gt;tolerate&lt;/td&gt;&lt;td&gt;世界のトイレ&lt;/td&gt;&lt;td&gt;を許容する, 我慢する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;228&lt;/td&gt;&lt;td&gt;instance&lt;/td&gt;&lt;td&gt;聞いたことある&lt;/td&gt;&lt;td&gt;(具体的な)例, 実例&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;229&lt;/td&gt;&lt;td&gt;nationality&lt;/td&gt;&lt;td&gt;国籍&lt;/td&gt;&lt;td&gt;国籍&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;230&lt;/td&gt;&lt;td&gt;vivid&lt;/td&gt;&lt;td&gt;バッティングセンター(下手糞)&lt;/td&gt;&lt;td&gt;鮮やかな&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;231&lt;/td&gt;&lt;td&gt;dairy&lt;/td&gt;&lt;td&gt;デイリーヤマザキ&lt;/td&gt;&lt;td&gt;乳製品&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;232&lt;/td&gt;&lt;td&gt;symbol&lt;/td&gt;&lt;td&gt;ちんぼぼろろん&lt;/td&gt;&lt;td&gt;象徴, シンボル&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;233&lt;/td&gt;&lt;td&gt;behalf&lt;/td&gt;&lt;td&gt;図書委員&lt;/td&gt;&lt;td&gt;利益, 味方&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;234&lt;/td&gt;&lt;td&gt;tempt&lt;/td&gt;&lt;td&gt;エロ垢&lt;/td&gt;&lt;td&gt;を(…する)気にさせる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;235&lt;/td&gt;&lt;td&gt;physician&lt;/td&gt;&lt;td&gt;医者&lt;/td&gt;&lt;td&gt;医師&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;236&lt;/td&gt;&lt;td&gt;sector&lt;/td&gt;&lt;td&gt;セックス部門&lt;/td&gt;&lt;td&gt;(社会・経済などの)部門&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;237&lt;/td&gt;&lt;td&gt;influence&lt;/td&gt;&lt;td&gt;トマト軍曹&lt;/td&gt;&lt;td&gt;影響(力)&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;238&lt;/td&gt;&lt;td&gt;awaken&lt;/td&gt;&lt;td&gt;なわけ&lt;/td&gt;&lt;td&gt;を目覚めさせる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;239&lt;/td&gt;&lt;td&gt;amaze&lt;/td&gt;&lt;td&gt;たまげたな&lt;/td&gt;&lt;td&gt;をびっくりさせる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;240&lt;/td&gt;&lt;td&gt;divine&lt;/td&gt;&lt;td&gt;ゼウス&lt;/td&gt;&lt;td&gt;神の&lt;/td&gt;&lt;/tr&gt;
+
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;241&lt;/td&gt;&lt;td&gt;examine&lt;/td&gt;&lt;td&gt;試験勉強&lt;/td&gt;&lt;td&gt;を調べる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;242&lt;/td&gt;&lt;td&gt;fundamental&lt;/td&gt;&lt;td&gt;作ればいいじゃない&lt;/td&gt;&lt;td&gt;基本的な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-dark-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;243&lt;/td&gt;&lt;td&gt;notion&lt;/td&gt;&lt;td&gt;カプリコが抜いたヤツ&lt;/td&gt;&lt;td&gt;概念, 観念&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;244&lt;/td&gt;&lt;td&gt;entertain&lt;/td&gt;&lt;td&gt;たのしいなぁ&lt;/td&gt;&lt;td&gt;を楽しませる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;245&lt;/td&gt;&lt;td&gt;disturb&lt;/td&gt;&lt;td&gt;ようつべの真逆&lt;/td&gt;&lt;td&gt;かき乱す&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;246&lt;/td&gt;&lt;td&gt;intend&lt;/td&gt;&lt;td&gt;淫夢傾向&lt;/td&gt;&lt;td&gt;を意図する&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;247&lt;/td&gt;&lt;td&gt;census&lt;/td&gt;&lt;td&gt;うるせんを出せ&lt;/td&gt;&lt;td&gt;国勢調査&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;248&lt;/td&gt;&lt;td&gt;available&lt;/td&gt;&lt;td&gt;TOKYO MOTION&lt;/td&gt;&lt;td&gt;手に入る&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;249&lt;/td&gt;&lt;td&gt;lag&lt;/td&gt;&lt;td&gt;荒野行動&lt;/td&gt;&lt;td&gt;遅れる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;250&lt;/td&gt;&lt;td&gt;accustom&lt;/td&gt;&lt;td&gt;寝れる&lt;/td&gt;&lt;td&gt;(人)を慣れさせる&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;251&lt;/td&gt;&lt;td&gt;sensitive&lt;/td&gt;&lt;td&gt;エッチなの駄目！死ねぇい&lt;/td&gt;&lt;td&gt;敏感な&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;252&lt;/td&gt;&lt;td&gt;focus&lt;/td&gt;&lt;td&gt;集中集中！&lt;/td&gt;&lt;td&gt;焦点&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr&gt;&lt;td class=&quot;col-no&quot;&gt;253&lt;/td&gt;&lt;td&gt;grief&lt;/td&gt;&lt;td&gt;シマウマ(キリン)&lt;/td&gt;&lt;td&gt;深い悲しみ&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;254&lt;/td&gt;&lt;td&gt;intake&lt;/td&gt;&lt;td&gt;淫夢傾向2&lt;/td&gt;&lt;td&gt;摂取量&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;255&lt;/td&gt;&lt;td&gt;supreme&lt;/td&gt;&lt;td&gt;特別なミー&lt;/td&gt;&lt;td&gt;最高の&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;256&lt;/td&gt;&lt;td&gt;urge&lt;/td&gt;&lt;td&gt;アジ缶&lt;/td&gt;&lt;td&gt;を(強く)促す&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;257&lt;/td&gt;&lt;td&gt;fold&lt;/td&gt;&lt;td&gt;千羽鶴&lt;/td&gt;&lt;td&gt;を折り畳む&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;258&lt;/td&gt;&lt;td&gt;grateful&lt;/td&gt;&lt;td&gt;炎上させるよ&lt;/td&gt;&lt;td&gt;感謝している&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;259&lt;/td&gt;&lt;td&gt;convert&lt;/td&gt;&lt;td&gt;規約違反&lt;/td&gt;&lt;td&gt;を変える&lt;/td&gt;&lt;/tr&gt;
+        &lt;tr class=&quot;bg-yellow&quot;&gt;&lt;td class=&quot;col-no&quot;&gt;260&lt;/td&gt;&lt;td&gt;assert&lt;/td&gt;&lt;td&gt;ケツの穴がびっくりアス&lt;/td&gt;&lt;td&gt;を主張する&lt;/td&gt;&lt;/tr&gt;
+
+
+&lt;/table&gt;
+</code></pre>
+</div>
+
+</body>
+</div>
+</details>
+
+
+
+
+            </div>
+
+            <div id="search-results">
+                <h2>検索結果</h2>
+                <ul id="results-list"></ul>
+                <p id="no-results">該当する記事や見出しが見つかりませんでした。</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // （前回と同じ検索スクリプトをそのまま使用）
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        const articleContent = document.getElementById('article-content');
+        const searchResults = document.getElementById('search-results');
+        const resultsList = document.getElementById('results-list');
+        const noResults = document.getElementById('no-results');
+
+        const headings = articleContent.querySelectorAll('h1, h2, h3');
+        headings.forEach((heading, index) => {
+            if (!heading.id) {
+                heading.id = 'heading-' + index;
+            }
+        });
+
+        const sidebarLinks = document.querySelectorAll('#sidebar a');
+
+        function performSearch() {
+            const query = searchInput.value.trim().toLowerCase();
+
+            if (query === '') {
+                articleContent.style.display = 'block';
+                searchResults.style.display = 'none';
+                return;
+            }
+
+            resultsList.innerHTML = '';
+            let found = false;
+
+            headings.forEach(heading => {
+                const text = heading.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    found = true;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = '#' + heading.id;
+                    a.textContent = heading.textContent;
+                    a.onclick = (e) => {
+                        e.preventDefault();
+                        articleContent.style.display = 'block';
+                        searchResults.style.display = 'none';
+                        searchInput.value = '';
+                        document.getElementById(heading.id).scrollIntoView({ behavior: 'smooth' });
+                    };
+                    li.appendChild(a);
+
+                    const span = document.createElement('span');
+                    span.textContent = 'このページの見出し';
+                    span.className = 'type-label this-page';
+                    li.appendChild(span);
+
+                    resultsList.appendChild(li);
+                }
+            });
+
+            sidebarLinks.forEach(link => {
+                const text = link.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    found = true;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = link.href;
+                    a.textContent = link.textContent;
+                    li.appendChild(a);
+
+                    const span = document.createElement('span');
+                    span.textContent = '別記事';
+                    span.className = 'type-label other-article';
+                    li.appendChild(span);
+
+                    resultsList.appendChild(li);
+                }
+            });
+
+            articleContent.style.display = 'none';
+            searchResults.style.display = 'block';
+            noResults.style.display = found ? 'none' : 'block';
+        }
+
+        searchButton.addEventListener('click', performSearch);
+        searchInput.addEventListener('keyup', (e) => {
+            if (e.key === 'Enter') performSearch();
+        });
+
+        searchResults.style.display = 'none';
+    </script>
+</body>
+</html>
